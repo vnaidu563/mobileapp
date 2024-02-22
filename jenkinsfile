@@ -1,0 +1,34 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout the code from Git repository
+                git branch: 'development', url: 'https://github.com/vnaidu563/mobileapp.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                // Build your mobile application for iOS (replace with actual build commands)
+                sh 'fastlane ios build'
+                // Build your mobile application for Android (replace with actual build commands)
+                sh 'fastlane android build'
+            }
+        }
+        stage('Test') {
+            steps {
+                // Run automated tests for iOS (replace with actual test commands)
+                sh 'fastlane ios test'
+                // Run automated tests for Android (replace with actual test commands)
+                sh 'fastlane android test'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                // Deploy your mobile application (replace with actual deployment commands)
+                sh 'fastlane deploy'
+            }
+        }
+    }
+}
