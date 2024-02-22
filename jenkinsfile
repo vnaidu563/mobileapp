@@ -5,7 +5,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Checkout the code from the appropriate Git branch
-                git branch: "${env.BRANCH_NAME}", url: 'https://github.com/vnaidu563/mobileapp.git'
+                git branch: "main", url: 'https://github.com/vnaidu563/mobileapp.git'
             }
         }
         stage('Build') {
