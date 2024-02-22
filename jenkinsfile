@@ -4,31 +4,41 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Checkout the code from Git repository
-                git branch: 'development', url: 'https://github.com/vnaidu563/mobileapp.git'
+                // Checkout the code from the appropriate Git branch
+                git branch: "${env.BRANCH_NAME}", url: 'https://github.com/vnaidu563/mobileapp.git'
             }
         }
         stage('Build') {
             steps {
-                // Build your mobile application for iOS (replace with actual build commands)
-                sh 'fastlane ios build'
-                // Build your mobile application for Android (replace with actual build commands)
-                sh 'fastlane android build'
+                // Build your web application (replace with actual build commands)
+                sh 'npm install'
+                sh 'npm run build'
             }
         }
         stage('Test') {
             steps {
-                // Run automated tests for iOS (replace with actual test commands)
-                sh 'fastlane ios test'
-                // Run automated tests for Android (replace with actual test commands)
-                sh 'fastlane android test'
+                // Run tests for your web application (replace with actual test commands)
+                sh 'npm test'
             }
         }
         stage('Deploy') {
+            when {
+                // Only deploy on specific branches (e.g., master or development)
+                expression { env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'development' }
+            }
             steps {
-                // Deploy your mobile application (replace with actual deployment commands)
-                sh 'fastlane deploy'
+                // Deploy your web application based on the branch
+                script {
+                    if (env.BRANCH_NAME == 'master') {
+                        sh 'ansible-playbook deploy_prod.yml'
+                    } else if (env.BRANCH_NAME == 'development') {
+                        sh 'ansible-playbook deploy_dev.yml'
+                    }
+                    // Add additional deployment steps as needed
+                }
             }
         }
     }
+}
+
 }
