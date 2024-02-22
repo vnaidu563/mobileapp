@@ -4,42 +4,21 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Checkout the code from the appropriate Git branch
-                git branch: "main", url: 'https://github.com/vnaidu563/mobileapp.git'
+                // Checkout code from Git repository
+                git url: 'https://github.com/vnaidu563/mobileapp.git', branch: 'main'
             }
         }
         stage('Build') {
             steps {
-                // Build your web application (replace with actual build commands)
-                sh 'npm install'
-                sh 'npm run build'
+                // Build the project (replace with actual build commands)
+                sh 'make build'
             }
         }
         stage('Test') {
             steps {
-                // Run tests for your web application (replace with actual test commands)
-                sh 'npm test'
-            }
-        }
-        stage('Deploy') {
-            when {
-                // Only deploy on specific branches (e.g., master or development)
-                expression { env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'development' }
-            }
-            steps {
-                // Deploy your web application based on the branch
-                script {
-                    if (env.BRANCH_NAME == 'master') {
-                        sh 'ansible-playbook deploy_prod.yml'
-                    } else if (env.BRANCH_NAME == 'development') {
-                        sh 'ansible-playbook deploy_dev.yml'
-                    }
-                    // Add additional deployment steps as needed
-                }
+                // Run tests (replace with actual test commands)
+                sh 'make test'
             }
         }
     }
-}
-
-
 }
